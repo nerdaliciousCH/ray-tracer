@@ -39,25 +39,12 @@ void play_with_vars() {
 int main(int argc, char *argv[]) {
 
 	int dim = std::stoi(argv[1]);
-
+	int index = 0;
 	typedef std::chrono::high_resolution_clock Clock;
-	int stack_array[dim][dim];
-	auto t1 = Clock::now();
-	unsigned int index = 0;
-	for(int i = 0; i < dim; i++){
-		for(int j = 0; j < dim; j++){
-			index = i*dim+j;
-			stack_array[i][j] = index;
-		}
-	}
-
-	auto t2 = Clock::now();
-	duration<double> time_spent = duration_cast<duration<double>>(t2 - t1);
-	print_time_spent(time_spent);
 
 	int *heap_array = (int *)malloc(dim*dim*sizeof(int));
 
-	t1 = Clock::now();
+	auto t1 = Clock::now();
 
 	for(int i = 0; i < dim; i++){
                for(int j = 0; j < dim; j++){
@@ -66,11 +53,25 @@ int main(int argc, char *argv[]) {
 		}
         }
 
+	auto t2 = Clock::now();
+	auto time_spent = duration_cast<duration<double>>(t2 - t1);
+	print_time_spent(time_spent);
+
+	int *heap_array2 = (int *)malloc(dim*dim*sizeof(int));
+
+	t1 = Clock::now();
+
+	for(int i = 0; i < dim; i++) {
+		for(int j = 0; j < dim; j++){
+			index = j*dim+i;
+			heap_array2[index] = index;
+		}
+	}
+
 	t2 = Clock::now();
 
-	time_spent = duration_cast<duration<double>>(t2 - t1);
-	print_time_spent(time_spent);
-	
+	auto time_spent2 = duration_cast<duration<double>>(t2 - t1);
+	print_time_spent(time_spent2);
 
-
+	return 0;
 }
