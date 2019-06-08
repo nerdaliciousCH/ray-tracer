@@ -2,3 +2,4 @@ core
 Makefile
 
 *.o
+*.s
