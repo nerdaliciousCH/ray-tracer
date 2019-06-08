@@ -1,77 +1,65 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <chrono>
-#include <ratio>
-#include <ctime>
-#include <thread>
+
+#include "helpers/utility_functions.h"
+#include "helpers/draw_bmp.h"
+#include "geometry/sphere.h"
+#include "geometry/ray.h"
+#include "color/color.h"
+#include "camera/camera.h"
 
 using namespace std::chrono;
 
-void sleep(unsigned int millis) {
-	std::this_thread::sleep_for(std::chrono::milliseconds(millis));
-}
-
-void print_time_spent(duration<double> time_spent) {
-	std::cout << std::fixed << std::setprecision(6) << time_spent.count() * 1000000.0f << " nanos" << std::endl;
-
-}
-
-int intGlobal = 42;
-
-void print_address(void *obj, int bytes, std::string type){
-	std::cout << "addr: " << obj << "\tbytes: " << bytes << "\ttype: " << type << std::endl;
-}
-
-void print_values(int value) {
-	std::cout << "got value: " << value << " at addr: " << &value << std::endl;
-}
-
-void play_with_vars() {
-	int intVar = 10;
-        float floatVar = 12;
-        print_address(&intVar, sizeof(intVar), "int (local)");
-        print_address(&floatVar, sizeof(floatVar), "float (local)");
-        print_address(&intGlobal, sizeof(intGlobal), "int (global)");
-        print_values(intVar);
-}
+int WIDTH = 320;
+int HEIGHT = 240;
 
 int main(int argc, char *argv[]) {
 
-	int dim = std::stoi(argv[1]);
-	int index = 0;
 	typedef std::chrono::high_resolution_clock Clock;
-
-	int *heap_array = (int *)malloc(dim*dim*sizeof(int));
-
 	auto t1 = Clock::now();
 
-	for(int i = 0; i < dim; i++){
-               for(int j = 0; j < dim; j++){
-		       index = i*dim+j;
-                       heap_array[index] = index;
-		}
-        }
+	Camera camera(
+		Vector(10.0, 0.0, 0.0),
+		Vector(0.0, 1.0, 0.0),
+		Vector(0.0, 0.0, -1.0)
+	);
 
-	auto t2 = Clock::now();
-	auto time_spent = duration_cast<duration<double>>(t2 - t1);
-	print_time_spent(time_spent);
+	// Sphere wall_back();
+	// Sphere wall_left();
+	// Sphere wall_right();
+	// Sphere wall_front();
+	Sphere sphere_left(0.5, Vector(1.0, 1.0, -10.0), Color(255, 0, 0));
+	Sphere sphere_right(0.5, Vector(-1.0, 1.0, -10.0), Color(0, 255, 0));
 
-	int *heap_array2 = (int *)malloc(dim*dim*sizeof(int));
+	for(int i = 0; i < WIDTH; i++){
+		for(int j = 0; j < HEIGHT; j++) {
+			float x = -0.5 + (float)i / (float)WIDTH;
+			float y = -0.5 + (float)j / (float)HEIGHT;
+			Ray ray(
+				Vector(0.0, 0.0, 0.0),
+				Vector(x, y, -1.0)
+			);
+			ray.print();
 
-	t1 = Clock::now();
-
-	for(int i = 0; i < dim; i++) {
-		for(int j = 0; j < dim; j++){
-			index = j*dim+i;
-			heap_array2[index] = index;
 		}
 	}
 
-	t2 = Clock::now();
+	auto t2 = Clock::now();
+	auto time_spent = duration_cast<duration<double>>(t2 - t1);
+	print_time_spent(time_spent, "right");
 
-	auto time_spent2 = duration_cast<duration<double>>(t2 - t1);
-	print_time_spent(time_spent2);
+	int *arr = (int *)malloc(HEIGHT*WIDTH*3*sizeof(int));
+	for(int i = 0; i < HEIGHT; i++) {
+		for(int j = 0; j < WIDTH*3; j+=3) {
+			unsigned int base = i*HEIGHT+j;
+			arr[base] = 0;
+			arr[base + 1] = 255;
+			arr[base + 2] = 0;
+		}
+	}
+
+	drawbmp("test.bmp", arr, WIDTH, HEIGHT);
 
 	return 0;
 }
