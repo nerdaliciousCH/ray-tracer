@@ -14,5 +14,5 @@ void sleep(unsigned int millis) {
 
 void print_time_spent(duration<double> time_spent, std::string label) {
 	std::cout << label << ": ";
-	std::cout << std::fixed << std::setprecision(6) << time_spent.count() * 1000000.0f << " nanos" << std::endl;
+	std::cout << std::fixed << std::setprecision(6) << time_spent.count() * 1000.0f << " ms" << std::endl;
 }

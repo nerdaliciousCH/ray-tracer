@@ -8,6 +8,7 @@ public:
     float x;
     float y;
     float z;
+    Vector(float xyz);
     Vector(float x, float y, float z);
     static float dot(Vector a, Vector b);
     Vector operator+(const Vector& other);

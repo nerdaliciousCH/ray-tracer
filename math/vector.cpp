@@ -1,5 +1,12 @@
 #include "vector.h"
 
+Vector::Vector(float xyz):
+    x(xyz),
+    y(xyz),
+    z(xyz){
+        
+    }
+
 Vector::Vector(float x, float y, float z):
     x(x),
     y(y),

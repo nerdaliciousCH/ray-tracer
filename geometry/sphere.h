@@ -2,17 +2,18 @@
 #define SPHERE_H
 
 #include <iostream>
+#include <math.h>
 #include "../math/vector.h"
 #include "../color/color.h"
+#include "intersectable.h"
 
-class Sphere {
+class Sphere : public Intersectable {
 public:
     float radius;
     Vector center;
-    Color color;
     Sphere(float radius, Vector center, Color color);
+    Vector intersect(Ray ray);
     void print();
-    // ostream& operator<<(ostream& os, const Sphere& sphere);
 };
 
 #endif

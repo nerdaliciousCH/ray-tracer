@@ -1,7 +1,6 @@
 #include "draw_bmp.h"
 
-#include <iostream>
-void drawbmp (char * filename, int *buffer, int width, int height) {
+void drawbmp (std::string filename, int *buffer, int width, int height) {
 
 	unsigned int headers[13];
 	FILE * outfile;
@@ -42,7 +41,7 @@ void drawbmp (char * filename, int *buffer, int width, int height) {
 	headers[11] = 0;                    // biClrUsed
 	headers[12] = 0;                    // biClrImportant
 
-	outfile = fopen(filename, "wb");
+	outfile = fopen(filename.c_str(), "wb");
 
 	//
 	// Headers begin...
@@ -77,8 +76,6 @@ void drawbmp (char * filename, int *buffer, int width, int height) {
 	//
 	// Headers done, now write the data...
 	//
-
-	std::cout << buffer << std::endl;
 
 	for (y = HEIGHT - 1; y >= 0; y--)     // BMP image format is written from bottom to top...
 	{
