@@ -6,15 +6,13 @@
 #include "../color/color.h"
 
 class Sphere {
-private:
-  float radius;
-  Vector center;
-  Color color;
-
 public:
-  Sphere(float radius, Vector center, Color color);
-  void print();
-  // ostream& operator<<(ostream& os, const Sphere& sphere);
+    float radius;
+    Vector center;
+    Color color;
+    Sphere(float radius, Vector center, Color color);
+    void print();
+    // ostream& operator<<(ostream& os, const Sphere& sphere);
 };
 
 #endif

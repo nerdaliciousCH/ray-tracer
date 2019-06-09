@@ -6,10 +6,9 @@
 #include "../math/vector.h"
 
 class Ray {
-private:
+public:
   Vector origin;
   Vector direction;
-public:
   Ray(Vector origin, Vector direction);
   void print();
 };

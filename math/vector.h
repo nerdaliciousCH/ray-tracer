@@ -4,14 +4,17 @@
 #include <iostream>
 
 class Vector {
-private:
-  float x;
-  float y;
-  float z;
 public:
-  Vector(float x, float y, float z);
-  void print();
-
+    float x;
+    float y;
+    float z;
+    Vector(float x, float y, float z);
+    static float dot(Vector a, Vector b);
+    Vector operator+(const Vector& other);
+    Vector operator-(const Vector& other);
+    Vector operator*(const float factor);
+    Vector operator/(const float factor);
+    void print();
 };
 
 #endif

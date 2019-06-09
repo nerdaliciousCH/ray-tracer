@@ -1,5 +1,6 @@
 #include "draw_bmp.h"
 
+#include <iostream>
 void drawbmp (char * filename, int *buffer, int width, int height) {
 
 	unsigned int headers[13];
@@ -77,14 +78,15 @@ void drawbmp (char * filename, int *buffer, int width, int height) {
 	// Headers done, now write the data...
 	//
 
+	std::cout << buffer << std::endl;
+
 	for (y = HEIGHT - 1; y >= 0; y--)     // BMP image format is written from bottom to top...
 	{
 	   for (x = 0; x <= WIDTH*3 - 1; x+=3)
 	   {
-
-	      red = buffer[HEIGHT + WIDTH];
-	      green = buffer[HEIGHT + WIDTH + 1];
-	      blue = buffer[HEIGHT + WIDTH + 2];
+	      red = buffer[x + y*WIDTH*3];
+	      green = buffer[x + y*WIDTH*3 + 1];
+	      blue = buffer[x + y*WIDTH*3 + 2];
 
 	      if (red > 255) red = 255; if (red < 0) red = 0;
 	      if (green > 255) green = 255; if (green < 0) green = 0;
