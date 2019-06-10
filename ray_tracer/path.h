@@ -14,8 +14,8 @@ private:
   int max_path_length;
   int path_length;
   Color color;
-  std::vector<Intersectable *> intersectables;
   Sphere *light;
+  std::vector<Intersectable *> intersectables;
 public:
   Path(Ray initial_ray, std::vector<Intersectable *> intersectables, Sphere *light, int max_path_length);
   void trace();

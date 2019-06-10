@@ -12,7 +12,7 @@ class Sphere : public Intersectable {
 public:
     float radius;
     Vector center;
-    Sphere(float radius, Vector center, Color color);
+    Sphere(float radius, Vector center, Color color, bool isLight, bool isReflective);
     float intersect(Ray ray);
     Vector getReflectionsDirection(Ray ray, float t);
     void print();

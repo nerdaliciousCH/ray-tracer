@@ -12,7 +12,7 @@ class Plane : public Intersectable {
 public:
   Vector normal;
   Vector point;
-  Plane(Vector point, Vector normal, Color color);
+  Plane(Vector point, Vector normal, Color color, bool isLight, bool isReflective);
   float intersect(Ray ray);
   Vector getReflectionsDirection(Ray ray, float t);
   void print();

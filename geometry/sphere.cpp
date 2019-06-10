@@ -1,11 +1,9 @@
 #include "sphere.h"
 
-Sphere::Sphere(float radius, Vector center, Color color) :
-    Intersectable(color),
+Sphere::Sphere(float radius, Vector center, Color color, bool isLight, bool isReflective) :
+    Intersectable(color, isLight, isReflective),
     radius(radius),
-    center(center){
-
-}
+    center(center){}
 
 float Sphere::intersect(Ray ray) {
     // t^2 * (dir dot dir) +
@@ -28,11 +26,16 @@ float Sphere::intersect(Ray ray) {
         float t1 = (-b+squareroot_discriminant)/(2 * a);
         float t2 = (-b-squareroot_discriminant)/(2 * a);
 
-        if (t1 <= 0 || t2 <= 0) {
+        if (t1 <= 0 && t2 <= 0) {
             // Intersection is behind us or we are inside it...
             return std::numeric_limits<float>::max();
         }
-
+        if(t1 <= 0) {
+            return t2;
+        }
+        if(t2 <= 0) {
+            return t1;
+        }
         if(t1 < t2) {
             return t1;
         } else {

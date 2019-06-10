@@ -14,7 +14,7 @@
 #include "../math/vector.h"
 #include "../ray_tracer/path.h"
 
-float EPSILON = 1.0e-4;
+// float EPSILON = 1.0e-4; TODO
 
 void print_success(){
     std::cout << "\xE2\x9C\x94" << std::endl;
@@ -39,8 +39,8 @@ void test_vector() {
     assert((a / 2).x == 0.5);
     assert((a * 2).x == 2.0);
     assert(a.length() == 1.0);
-    assert((c.length() - 1.4142) < EPSILON);
-    assert(normalized.length() - 1.0 < EPSILON);
+    assert((c.length() - 1.4142) < 1.0e-4);
+    assert(normalized.length() - 1.0 < 1.0e-4);
     print_success();
 }
 
@@ -52,8 +52,8 @@ void test_ray() {
         Vector(0.0),
         non_normalized
     );
-    assert(std::abs(non_normalized.length() - 1.0) > EPSILON);
-    assert(std::abs(ray.direction.length() - 1.0) < EPSILON);
+    assert(std::abs(non_normalized.length() - 1.0) > 1.0e-4);
+    assert(std::abs(ray.direction.length() - 1.0) < 1.0e-4);
 
     print_success();
 }
@@ -64,7 +64,9 @@ void test_plane() {
     Plane plane(
         Vector(0.0, 0.0, -10.0),
         Vector(0.0, 0.0, 1.0),
-        Color(0)
+        Color(0),
+        false,
+        false
     );
     Ray ray_straight(
         Vector(0.0),
@@ -95,7 +97,9 @@ void test_sphere() {
     Sphere sphere(
         5.0,
         Vector(0.0, 0.0, -20.0),
-        Color(0)
+        Color(0),
+        false,
+        false
     );
     Ray ray_straight(
         Vector(0.0),

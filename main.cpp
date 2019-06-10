@@ -19,7 +19,7 @@
 using namespace std::chrono;
 
 // Globals
-int pixel_factor = 50;
+int pixel_factor = 30;
 int WIDTH = 16*pixel_factor;
 int HEIGHT = 16*pixel_factor;
 float BOX_DIM = 2.5;
@@ -40,42 +40,44 @@ int main(int argc, char *argv[]) {
 		Vector(0.0, 0.0, -1.0)
 	);
 
-	Sphere *lightBulb = new Sphere(radius, Vector(0.0, -BOX_DIM - 0.25, -7.5), Color(255, 255, 255));
+	Sphere *light = new Sphere(radius, Vector(0.0, -BOX_DIM + 0.45, 1.5), Color(255, 255, 255), true, false);
 
 	std::vector<Intersectable *> intersectables;
 
-	float radius_wall = 1000.0;
+	intersectables.push_back(
+		light
+	);
 	// Wall left
 	intersectables.push_back(
-		new Plane(Vector(-BOX_DIM, 0.0, 0.0), Vector(1.0, 0.0, 0.0), Color(0, 0, 255))
+		new Plane(Vector(-BOX_DIM, 0.0, 0.0), Vector(1.0, 0.0, 0.0), Color(0, 0, 255), false, false)
 	);
 	// Wall right
 	intersectables.push_back(
-		new Plane(Vector(BOX_DIM, 0.0, 0.0), Vector(-1.0, 0.0, 0.0), Color(255, 0, 0))
+		new Plane(Vector(BOX_DIM, 0.0, 0.0), Vector(-1.0, 0.0, 0.0), Color(255, 0, 0), false, false)
 	);
 	// Wall front
 	intersectables.push_back(
-		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(0, 255, 255))
+		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(0, 255, 255), false, false)
 	);
 	// Wall back
 	intersectables.push_back(
-		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(255, 255, 0))
+		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(255, 255, 0), false, false)
 	);
 	// Wall top
 	intersectables.push_back(
-		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(100, 255, 100))
+		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(100, 255, 100), false, false)
 	);
 	// Wall bottom
 	intersectables.push_back(
-		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(100, 100, 255))
+		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(100, 100, 255), false, true)
 	);
 	// Red sphere
 	intersectables.push_back(
-		new Sphere(radius, Vector(0.0, 0.5, -5.0), Color(255, 0, 0))
+		new Sphere(radius, Vector(0.0, 1.0, -5.0), Color(255, 0, 0), false, true)
 	);
 	// Green sphere
 	intersectables.push_back(
-		new Sphere(radius, Vector(0.75, 0.5, -3.0), Color(0, 255, 0))
+		new Sphere(radius, Vector(0.75, 1.0, -3.4), Color(0, 255, 0), false, false)
 	);
 
 	srand(time(NULL));
@@ -98,7 +100,7 @@ int main(int argc, char *argv[]) {
 			Path path(
 				initial_ray,
 				intersectables,
-				lightBulb,
+				light,
 				depth
 			);
 			path.trace();
@@ -109,8 +111,6 @@ int main(int argc, char *argv[]) {
 			color_buffer[base + 2] = final_color.b;
 		}
 	}
-	std::cout << "Light at: " << &lightBulb << std::endl;
-
 	auto time_end = Clock::now();
 	auto time_spent = duration_cast<duration<double>>(time_end - time_start);
 	print_time_spent(time_spent, "Time spent");

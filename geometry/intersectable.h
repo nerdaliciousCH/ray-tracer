@@ -7,7 +7,13 @@
 
 class Intersectable {
 public:
-  Intersectable(Color color): color(color) {};
+    Intersectable(Color color, bool isLightSource, bool isReflective):
+        color(color),
+        isLightSource(isLightSource),
+        isReflective(isReflective)
+        {};
+  bool isReflective;
+  bool isLightSource;
   Color color;
   virtual float intersect(Ray ray) = 0;
   virtual Vector getReflectionsDirection(Ray ray, float t) = 0;

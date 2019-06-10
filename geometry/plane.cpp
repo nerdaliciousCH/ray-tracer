@@ -1,10 +1,9 @@
 #include "plane.h"
 
-Plane::Plane(Vector point, Vector normal, Color color) :
-    Intersectable(color),
+Plane::Plane(Vector point, Vector normal, Color color, bool isLight, bool isReflective) :
+    Intersectable(color, isLight, isReflective),
     point(point),
-    normal(normal) {
-
+    normal(normal){
     }
 
 float Plane::intersect(Ray ray) {
