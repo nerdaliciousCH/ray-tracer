@@ -66,7 +66,6 @@ bool Vector::operator==(const Vector& other) {
     return std::abs(x - other.x) < EPSILON && std::abs(y - other.y) < EPSILON && std::abs(z - other.z) < EPSILON;
 }
 
-
 bool Vector::operator!=(const Vector& other) {
     return std::abs(x - other.x) >= EPSILON || std::abs(y - other.y) >= EPSILON || std::abs(z - other.z) >= EPSILON;
 }
