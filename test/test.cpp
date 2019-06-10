@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <assert.h>
+#include <math.h>
 
 #include "../helpers/utility_functions.h"
 #include "../helpers/draw_bmp.h"
@@ -13,7 +14,7 @@
 #include "../math/vector.h"
 #include "../ray_tracer/path.h"
 
-float EPSILON = 0.0001;
+float EPSILON = 1.0e-4;
 
 void print_success(){
     std::cout << "\xE2\x9C\x94" << std::endl;
@@ -51,8 +52,8 @@ void test_ray() {
         Vector(0.0),
         non_normalized
     );
-    assert(non_normalized.length() -1.0 > EPSILON);
-    assert(ray.direction.length() - 1.0 < EPSILON);
+    assert(std::abs(non_normalized.length() - 1.0) > EPSILON);
+    assert(std::abs(ray.direction.length() - 1.0) < EPSILON);
 
     print_success();
 }
@@ -117,14 +118,16 @@ void test_sphere() {
 
     assert((ray_straight.origin + ray_straight.direction * t_straight) == Vector(0.0, 0.0, sphere.center.z + sphere.radius));
     assert(dir_straight_reflection == Vector(0.0, 0.0, 1.0));
-    assert((ray_non_straight.origin + ray_non_straight.direction * t_non_straight) == Vector(1.0, 0.0, 0.0));
+    assert((ray_non_straight.origin + ray_non_straight.direction * t_non_straight) == hit_askew_target_position);
+    assert((dir_non_straight_reflection == Vector(1.0, 0.0, 0.0)));
+
     print_success();
 }
 
 int main(int argc, char *argv[]){
     std::cout << "Running test ..." << std::endl;
-    // test_vector();
-    // test_ray();
-    // test_plane();
+    test_vector();
+    test_ray();
+    test_plane();
     test_sphere();
 }

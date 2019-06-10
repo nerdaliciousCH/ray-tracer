@@ -6,7 +6,7 @@
 
 class Vector {
 public:
-    float EPSILON = 1.0e-10;
+    float EPSILON = 1.0e-4; // TODO make this a global constant
     float x;
     float y;
     float z;
