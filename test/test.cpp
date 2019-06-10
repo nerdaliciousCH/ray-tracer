@@ -1,10 +1,5 @@
 #include <iostream>
-#include <iomanip>
 #include <string>
-#include <stdlib.h>
-#include <time.h>
-#include <vector>
-
 #include <assert.h>
 
 #include "../helpers/utility_functions.h"
@@ -68,29 +63,58 @@ void test_plane() {
     Plane plane(
         Vector(0.0, 0.0, -10.0),
         Vector(0.0, 0.0, 1.0),
-        Color(255, 255, 255)
+        Color(0)
     );
     Ray ray_straight(
         Vector(0.0),
         Vector(0.0, 0.0, -1.0)
     );
     float t_straight = plane.intersect(ray_straight);
+    Vector dir_straight_reflection = plane.getReflectionsDirection(ray_straight, t_straight);
     Ray ray_non_straight(
         Vector(0.0),
         Vector(-1.0, 0.0, -1.0)
     );
+    float t_non_straight = plane.intersect(ray_non_straight);
+    Vector dir_non_straight_reflection = plane.getReflectionsDirection(ray_non_straight, t_non_straight);
 
-    // TODO continue here. please normalize direction of ray_non_straight
-
-
+    // Test intersection points
     assert((ray_straight.origin + ray_straight.direction * t_straight) == plane.point);
+    assert((ray_non_straight.origin + ray_non_straight.direction * t_non_straight) == Vector(-10.0, 0.0, -10.0));
+    // Test reflection directions
+    assert(dir_straight_reflection == ray_straight.direction * -1);
+    assert(dir_non_straight_reflection == Vector::normalize(Vector(-1.0, 0.0, 1.0)));
+
+    print_success();
+}
+
+void test_sphere() {
+    print_test_preamble("Sphere");
+
+    Sphere sphere(
+        5.0,
+        Vector(0.0, 0.0, -20.0),
+        Color(0)
+    );
+    Ray ray_straight(
+        Vector(0.0),
+        Vector(0.0, 0.0, -1.0)
+    );
+    float t_straight = sphere.intersect(ray_straight);
+    ray_straight.origin.print();
+    ray_straight.direction.print();
+    std::cout << std::endl << "t intersect: " << t_straight << std::endl;
+    Vector res = (ray_straight.origin + ray_straight.direction * t_straight);
+    res.print();
+    // assert(() == Vector(0.0, 0.0, sphere.center.z + sphere.radius));
 
     print_success();
 }
 
 int main(int argc, char *argv[]){
     std::cout << "Running test ..." << std::endl;
-    test_vector();
-    test_ray();
-    test_plane();
+    // test_vector();
+    // test_ray();
+    // test_plane();
+    test_sphere();
 }

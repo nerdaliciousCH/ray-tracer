@@ -22,11 +22,11 @@ using namespace std::chrono;
 int pixel_factor = 20;
 int WIDTH = 16*pixel_factor;
 int HEIGHT = 16*pixel_factor;
-float BOX_DIM = 0.5;
+float BOX_DIM = 2.5;
 
 int main(int argc, char *argv[]) {
 	// Get input
-	float radius = (float)std::stoi(argv[1]);
+	float radius = std::stof(argv[1]);
 	int depth = std::stoi(argv[2]);
 	int samples = std::stoi(argv[3]);
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 	);
 	// Wall front
 	intersectables.push_back(
-		new Plane(Vector(0.0, 0.0, -4.0), Vector(0.0, 0.0, 1.0), Color(0, 255, 255))
+		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(0, 255, 255))
 	);
 	// Wall back
 	intersectables.push_back(
@@ -69,15 +69,14 @@ int main(int argc, char *argv[]) {
 	intersectables.push_back(
 		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(100, 100, 255))
 	);
-
 	// Red sphere
 	intersectables.push_back(
-		new Sphere(radius, Vector(-1.0, 3.0, -20.0), Color(255, 0, 0))
-		);
+		new Sphere(radius, Vector(0.0, 0.5, -5.0), Color(255, 0, 0))
+	);
 	// Green sphere
 	intersectables.push_back(
-		new Sphere(radius, Vector(1.0, 3.0, -20.0), Color(0, 255, 0))
-		);
+		new Sphere(radius, Vector(0.75, 0.5, -3.0), Color(0, 255, 0))
+	);
 
 	srand(time(NULL));
 
@@ -92,7 +91,8 @@ int main(int argc, char *argv[]) {
 
 			Ray initial_ray(
 				camera.getPosition(),
-				Vector::normalize(Vector(y, x, -2.0)) // TODO why do I have to flip this?
+				Vector(y, x, -1.0) // TODO why do I have to flip this?
+				// TODO adjust how Z-coord affects FOV
 			);
 
 			Path path(

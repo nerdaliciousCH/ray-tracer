@@ -1,11 +1,11 @@
 if [[ -z $1 ]]; then
-	RADIUS=2
+	RADIUS=0.5
 else
 	RADIUS=$1
 fi
 
 if [[ -z $2 ]]; then
-	DEPTH=5
+	DEPTH=1
 else
 	DEPTH=$2
 fi

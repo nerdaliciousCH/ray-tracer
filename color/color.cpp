@@ -7,6 +7,13 @@ b(b){
 
 }
 
+Color::Color(int grayscale) :
+    r(grayscale),
+    g(grayscale),
+    b(grayscale) {
+
+}
+
 void Color::print() {
     std::cout << "red: " << r << "\tgreen: " << g << "\tblue: " << b << std::endl;
 }

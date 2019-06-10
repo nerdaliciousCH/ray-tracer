@@ -9,6 +9,7 @@ public:
   int g;
   int b;
   Color(int r, int g, int b);
+  Color(int grayscale);
   void print();
 };
 
