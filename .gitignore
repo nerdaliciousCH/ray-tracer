@@ -1,6 +1,7 @@
 core
 Makefile
-
+test/Makefile
+test/test
 *.o
 *.s
 *.bmp

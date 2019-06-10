@@ -100,14 +100,24 @@ void test_sphere() {
         Vector(0.0),
         Vector(0.0, 0.0, -1.0)
     );
-    float t_straight = sphere.intersect(ray_straight);
-    ray_straight.origin.print();
-    ray_straight.direction.print();
-    std::cout << std::endl << "t intersect: " << t_straight << std::endl;
-    Vector res = (ray_straight.origin + ray_straight.direction * t_straight);
-    res.print();
-    // assert(() == Vector(0.0, 0.0, sphere.center.z + sphere.radius));
+    // Find out where to hit the sphere for a right angle reflection
+    Vector hit_askew_target_position = sphere.center + Vector::normalize(Vector(1.0, 0.0, 1.0)) * sphere.radius;
+    Vector hit_askew_dir =  Vector::normalize(hit_askew_target_position);
 
+    Ray ray_non_straight(
+        Vector(hit_askew_target_position.x, 0.0, 0.0),
+        Vector(0.0, 0.0, -1.0)
+    );
+
+    float t_straight = sphere.intersect(ray_straight);
+    Vector dir_straight_reflection = sphere.getReflectionsDirection(ray_straight, t_straight);
+
+    float t_non_straight = sphere.intersect(ray_non_straight);
+    Vector dir_non_straight_reflection = sphere.getReflectionsDirection(ray_non_straight, t_non_straight);
+
+    assert((ray_straight.origin + ray_straight.direction * t_straight) == Vector(0.0, 0.0, sphere.center.z + sphere.radius));
+    assert(dir_straight_reflection == Vector(0.0, 0.0, 1.0));
+    assert((ray_non_straight.origin + ray_non_straight.direction * t_non_straight) == Vector(1.0, 0.0, 0.0));
     print_success();
 }
 

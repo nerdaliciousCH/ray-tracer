@@ -6,6 +6,7 @@
 
 class Vector {
 public:
+    float EPSILON = 1.0e-10;
     float x;
     float y;
     float z;

@@ -63,12 +63,12 @@ Vector Vector::operator/(const float factor){
 }
 
 bool Vector::operator==(const Vector& other) {
-    return x == other.x && y == other.y && z == other.z;
+    return std::abs(x - other.x) < EPSILON && std::abs(y - other.y) < EPSILON && std::abs(z - other.z) < EPSILON;
 }
 
 
 bool Vector::operator!=(const Vector& other) {
-    return x != other.x || y != other.y || z != other.z;
+    return std::abs(x - other.x) >= EPSILON || std::abs(y - other.y) >= EPSILON || std::abs(z - other.z) >= EPSILON;
 }
 
 void Vector::print() {
