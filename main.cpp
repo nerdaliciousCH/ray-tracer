@@ -8,47 +8,76 @@
 #include "helpers/utility_functions.h"
 #include "helpers/draw_bmp.h"
 #include "geometry/intersectable.h"
+#include "geometry/plane.h"
 #include "geometry/sphere.h"
-#include "geometry/cube.h"
 #include "geometry/ray.h"
 #include "color/color.h"
 #include "camera/camera.h"
 #include "math/vector.h"
+#include "ray_tracer/path.h"
 
 using namespace std::chrono;
 
 // Globals
-int pixel_factor = 40;
+int pixel_factor = 20;
 int WIDTH = 16*pixel_factor;
-int HEIGHT = 9*pixel_factor;
+int HEIGHT = 16*pixel_factor;
+float BOX_DIM = 0.5;
 
 int main(int argc, char *argv[]) {
 	// Get input
 	float radius = (float)std::stoi(argv[1]);
+	int depth = std::stoi(argv[2]);
+	int samples = std::stoi(argv[3]);
 
 	// Setup timer
 	typedef std::chrono::high_resolution_clock Clock;
 	auto time_start = Clock::now();
 
 	Camera camera(
-		Vector(10.0, 0.0, 0.0),
+		Vector(2.0, 0.0, 0.0),
 		Vector(0.0, 1.0, 0.0),
 		Vector(0.0, 0.0, -1.0)
 	);
 
+	Sphere lightBulb(radius, Vector(5.0, 2.5, -20.0), Color(255, 255, 255));
+
 	std::vector<Intersectable *> intersectables;
+
+	float radius_wall = 1000.0;
+	// Wall left
 	intersectables.push_back(
-		new Cube(
-			Vector(1.0, 0.0, -20.0),
-			0.1, 0.1, 0.1, Color(0, 0, 255)
-		)
+		new Plane(Vector(-BOX_DIM, 0.0, 0.0), Vector(1.0, 0.0, 0.0), Color(0, 0, 255))
 	);
+	// Wall right
 	intersectables.push_back(
-		new Sphere(radius, Vector(0.0, 0.0, -20.0), Color(255, 0, 0))
-		);
+		new Plane(Vector(BOX_DIM, 0.0, 0.0), Vector(-1.0, 0.0, 0.0), Color(255, 0, 0))
+	);
+	// // Wall front
+	// intersectables.push_back(
+	// 	new Plane(Vector(0.0, 0.0, -BOX_DIM), Vector(0.0, 0.0, 1.0), Color(0, 255, 255))
+	// );
+	// // Wall back
+	// intersectables.push_back(
+	// 	new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(255, 255, 0))
+	// );
+	// Wall top
 	intersectables.push_back(
-		new Sphere(radius, Vector(0.0, 5.0, -20.0), Color(0, 255, 0))
-		);
+		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(0, 255, 0))
+	);
+	// Wall bottom
+	intersectables.push_back(
+		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(255, 0, 255))
+	);
+
+	// // Red sphere
+	// intersectables.push_back(
+	// 	new Sphere(radius, Vector(0.0, 0.0, -20.0), Color(255, 0, 0))
+	// 	);
+	// // Green sphere
+	// intersectables.push_back(
+	// 	new Sphere(radius, Vector(0.0, 3.0, -20.0), Color(0, 255, 0))
+	// 	);
 
 	srand(time(NULL));
 
@@ -58,22 +87,26 @@ int main(int argc, char *argv[]) {
 		for(int j = 0; j < WIDTH; j++) {
 
 			unsigned int base = (i*WIDTH+j)*3;
-
 			float x = -0.5 + (float)i / (float)WIDTH;
 			float y = -0.5 + (float)j / (float)HEIGHT;
-			Ray initial_ray(
-				Vector(0.0, 0.0, 0.0),
-				Vector(x, y, -1.0)
-			);
-			for(std::vector<Intersectable *>::iterator it = intersectables.begin(); it != intersectables.end(); ++it){
-				Vector res = (*it)->intersect(initial_ray);
-				if(res.x > 0){
-					color_buffer[base] = (*it)->color.r;
-					color_buffer[base + 1] = (*it)->color.g;
-					color_buffer[base + 2] = (*it)->color.b;
-				}
 
-			}
+			Ray initial_ray(
+				camera.getPosition(),
+				Vector::normalize(Vector(y, x, -2.0)) // TODO why do I have to flip this?
+			);
+
+			Path path(
+				initial_ray,
+				intersectables,
+				lightBulb,
+				depth
+			);
+			path.trace();
+
+			Color final_color = path.getColor();
+			color_buffer[base] = final_color.r;
+			color_buffer[base + 1] = final_color.g;
+			color_buffer[base + 2] = final_color.b;
 		}
 	}
 

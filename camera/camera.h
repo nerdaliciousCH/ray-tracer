@@ -10,6 +10,7 @@ private:
   Vector front;
 public:
   Camera(Vector position, Vector up, Vector front);
+  Vector getPosition();
   void print();
 };
 

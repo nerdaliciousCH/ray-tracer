@@ -2,6 +2,7 @@
 #define SPHERE_H
 
 #include <iostream>
+#include <limits>
 #include <math.h>
 #include "../math/vector.h"
 #include "../color/color.h"
@@ -12,7 +13,8 @@ public:
     float radius;
     Vector center;
     Sphere(float radius, Vector center, Color color);
-    Vector intersect(Ray ray);
+    float intersect(Ray ray);
+    Vector getReflectionsDirection(Ray ray, float t);
     void print();
 };
 

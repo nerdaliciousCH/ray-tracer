@@ -6,3 +6,7 @@ Camera::Camera(Vector position, Vector up, Vector front) :
     front(front) {
 
 }
+
+Vector Camera::getPosition() {
+    return position;
+}

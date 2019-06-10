@@ -9,7 +9,8 @@ class Intersectable {
 public:
   Intersectable(Color color): color(color) {};
   Color color;
-  virtual Vector intersect(Ray ray) = 0;
+  virtual float intersect(Ray ray) = 0;
+  virtual Vector getReflectionsDirection(Ray ray, float t) = 0;
 };
 
 #endif

@@ -2,6 +2,7 @@
 #define VECTOR_H
 
 #include <iostream>
+#include <math.h>
 
 class Vector {
 public:
@@ -11,6 +12,8 @@ public:
     Vector(float xyz);
     Vector(float x, float y, float z);
     static float dot(Vector a, Vector b);
+    static Vector normalize(Vector a);
+    float length();
     Vector operator+(const Vector& other);
     Vector operator-(const Vector& other);
     Vector operator*(const float factor);

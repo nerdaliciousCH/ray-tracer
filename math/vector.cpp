@@ -4,7 +4,7 @@ Vector::Vector(float xyz):
     x(xyz),
     y(xyz),
     z(xyz){
-        
+
     }
 
 Vector::Vector(float x, float y, float z):
@@ -13,8 +13,17 @@ Vector::Vector(float x, float y, float z):
     z(z){
 }
 
+Vector Vector::normalize(Vector a) {
+    float length = a.length();
+    return Vector(a.x/length, a.y/length, a.z/length);
+}
+
 float Vector::dot(Vector a, Vector b){
     return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+float Vector::length() {
+    return sqrt(x*x + y*y + z*z);
 }
 
 Vector Vector::operator+(const Vector& other){
