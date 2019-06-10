@@ -3,7 +3,7 @@
 Ray::Ray(Vector origin, Vector direction) :
 origin(origin),
 direction(direction){
-
+    this->direction = Vector::normalize(direction);
 }
 
 void Ray::print(){

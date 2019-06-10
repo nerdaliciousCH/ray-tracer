@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	auto time_start = Clock::now();
 
 	Camera camera(
-		Vector(2.0, 0.0, 0.0),
+		Vector(0.0),
 		Vector(0.0, 1.0, 0.0),
 		Vector(0.0, 0.0, -1.0)
 	);
@@ -53,31 +53,31 @@ int main(int argc, char *argv[]) {
 	intersectables.push_back(
 		new Plane(Vector(BOX_DIM, 0.0, 0.0), Vector(-1.0, 0.0, 0.0), Color(255, 0, 0))
 	);
-	// // Wall front
-	// intersectables.push_back(
-	// 	new Plane(Vector(0.0, 0.0, -BOX_DIM), Vector(0.0, 0.0, 1.0), Color(0, 255, 255))
-	// );
-	// // Wall back
-	// intersectables.push_back(
-	// 	new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(255, 255, 0))
-	// );
+	// Wall front
+	intersectables.push_back(
+		new Plane(Vector(0.0, 0.0, -4.0), Vector(0.0, 0.0, 1.0), Color(0, 255, 255))
+	);
+	// Wall back
+	intersectables.push_back(
+		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(255, 255, 0))
+	);
 	// Wall top
 	intersectables.push_back(
-		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(0, 255, 0))
+		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(100, 255, 100))
 	);
 	// Wall bottom
 	intersectables.push_back(
-		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(255, 0, 255))
+		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(100, 100, 255))
 	);
 
-	// // Red sphere
-	// intersectables.push_back(
-	// 	new Sphere(radius, Vector(0.0, 0.0, -20.0), Color(255, 0, 0))
-	// 	);
-	// // Green sphere
-	// intersectables.push_back(
-	// 	new Sphere(radius, Vector(0.0, 3.0, -20.0), Color(0, 255, 0))
-	// 	);
+	// Red sphere
+	intersectables.push_back(
+		new Sphere(radius, Vector(-1.0, 3.0, -20.0), Color(255, 0, 0))
+		);
+	// Green sphere
+	intersectables.push_back(
+		new Sphere(radius, Vector(1.0, 3.0, -20.0), Color(0, 255, 0))
+		);
 
 	srand(time(NULL));
 

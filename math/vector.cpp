@@ -62,6 +62,15 @@ Vector Vector::operator/(const float factor){
     return new_vec;
 }
 
+bool Vector::operator==(const Vector& other) {
+    return x == other.x && y == other.y && z == other.z;
+}
+
+
+bool Vector::operator!=(const Vector& other) {
+    return x != other.x || y != other.y || z != other.z;
+}
+
 void Vector::print() {
     std::cout << "x: " << x << "\ty: " << y << "\tz: " << z << std::endl;
 }
