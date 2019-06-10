@@ -17,6 +17,10 @@ float Plane::intersect(Ray ray) {
 
 }
 
+Vector Plane::getNormal(Vector a){
+    return normal;
+}
+
 Vector Plane::getReflectionsDirection(Ray ray, float t) {
     return ray.direction - normal * 2 * Vector::dot(ray.direction, normal);
 }

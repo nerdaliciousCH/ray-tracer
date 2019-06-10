@@ -14,6 +14,7 @@ public:
   Vector point;
   Plane(Vector point, Vector normal, Color color, bool isLight, bool isReflective);
   float intersect(Ray ray);
+  Vector getNormal(Vector surface_point);
   Vector getReflectionsDirection(Ray ray, float t);
   void print();
 };

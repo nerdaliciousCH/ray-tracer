@@ -47,6 +47,10 @@ float Sphere::intersect(Ray ray) {
     }
 }
 
+Vector Sphere::getNormal(Vector surface_point){
+    return Vector::normalize(surface_point - center);
+}
+
 Vector Sphere::getReflectionsDirection(Ray ray, float t) {
     Vector point = ray.origin + ray.direction * t;
     Vector normal = Vector::normalize(point - center);

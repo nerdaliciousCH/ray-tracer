@@ -57,27 +57,27 @@ int main(int argc, char *argv[]) {
 	);
 	// Wall front
 	intersectables.push_back(
-		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(0, 255, 255), false, false)
+		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(255, 255, 255), false, true)
 	);
 	// Wall back
 	intersectables.push_back(
-		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(255, 255, 0), false, false)
+		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(150, 150, 150), false, false)
 	);
 	// Wall top
 	intersectables.push_back(
-		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(100, 255, 100), false, false)
+		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(150, 150, 150), false, false)
 	);
 	// Wall bottom
 	intersectables.push_back(
-		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(100, 100, 255), false, true)
+		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(150, 150, 150), false, false)
 	);
 	// Red sphere
 	intersectables.push_back(
-		new Sphere(radius, Vector(0.0, 1.0, -5.0), Color(255, 0, 0), false, true)
+		new Sphere(radius, Vector(0.0, 1.0, -5.0), Color(255, 0, 0), false, false)
 	);
 	// Green sphere
 	intersectables.push_back(
-		new Sphere(radius, Vector(0.75, 1.0, -3.4), Color(0, 255, 0), false, false)
+		new Sphere(radius, Vector(0.75, 1.0, -3.4), Color(0, 255, 0), false, true)
 	);
 
 	srand(time(NULL));

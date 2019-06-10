@@ -1,6 +1,6 @@
 #include "path.h"
 
-#include <limits>
+#include <time.h>
 
 float EPSILON = 1.0e-4;
 
@@ -15,17 +15,13 @@ Path::Path(Ray initial_ray, std::vector<Intersectable *> intersectables, Sphere 
 void Path::trace() {
 
     /* TODO
-    start with primary ray
-    then evaluate shadow ray (add light color or black to primary ray color)
-    AND evaluate reflective ray (for reflective surface)
+    evaluate reflective ray (for reflective surface)
     AND shoot stochastic ambient rays (for ambient light) with max_depth
     */
 
     // Primary ray
     float min_t = std::numeric_limits<float>::max();
     Intersectable *min_i = NULL;
-    Vector new_pos(0.0);
-    Vector new_dir(0.0);
     Ray ray = initial_ray;
 
     int ray_count = 0;
@@ -51,16 +47,20 @@ void Path::trace() {
 
     // Shadow ray and reflection
     if(!(min_i->isLightSource)){
-        // Get hit position
+        // Save old hit information
         Vector init_origin = ray.origin;
         Vector init_direction = ray.direction;
         float init_min_t = min_t;
         Intersectable *initial_hit_object = min_i;
+
+        // Get hit position and set ray for Shadow ray
         Vector hit_point = ray.origin + ray.direction * min_t;
         ray.origin = hit_point;
         ray.direction = Vector::normalize(light->center - hit_point);
         Vector new_origin_epsilon = ray.origin + ray.direction * 0.0001;
         ray.origin = new_origin_epsilon;
+
+        // Reset hit info
         min_i = NULL;
         min_t = std::numeric_limits<float>::max();
         for(std::vector<Intersectable *>::iterator it = intersectables.begin(); it != intersectables.end(); ++it){
@@ -72,26 +72,65 @@ void Path::trace() {
         }
         bool isShadow = !min_i->isLightSource;
 
-        // // Reflectionnnn
-        // if(min_i->isReflective){
-        //     Vector reflection = initial_hit_object->getReflectionsDirection(ray, init_min_t);
-        //     ray.origin = init_origin + init_direction * init_min_t;
-        //     ray.direction = Vector::normalize(reflection);
-        //     min_i = NULL;
-        //     min_t = std::numeric_limits<float>::max();
-        //     for(std::vector<Intersectable *>::iterator it = intersectables.begin(); it != intersectables.end(); ++it){
-        //         float t = (*it)->intersect(ray);
-        //         if (t < min_t){
-        //             min_t = t;
-        //             min_i = *it;
-        //         }
-        //     }
-        //     color.r += min_i->color.r;
-        //     color.g += min_i->color.g;
-        //     color.b += min_i->color.b;
-        // }
+        // Reflection
+        if(initial_hit_object->isReflective){
+            ray_count++;
+            Ray old_ray(init_origin, init_direction);
+            Vector reflection = initial_hit_object->getReflectionsDirection(old_ray, init_min_t);
+            ray.origin = init_origin + init_direction * init_min_t;
+            ray.direction = Vector::normalize(reflection);
+            ray.origin = ray.origin + ray.direction * 0.0001;
+
+            // Hit another object as perfect reflection.
+            min_i = NULL;
+            min_t = std::numeric_limits<float>::max();
+            for(std::vector<Intersectable *>::iterator it = intersectables.begin(); it != intersectables.end(); ++it){
+                float t = (*it)->intersect(ray);
+                if (t < min_t){
+                    min_t = t;
+                    min_i = *it;
+                }
+            }
+            color.r += min_i->color.r;
+            color.g += min_i->color.g;
+            color.b += min_i->color.b;
+        } else {
+            // Stochastic light
+            for (int i = 0; i < 10; i++){
+                Vector p = init_origin + init_direction * init_min_t;
+                Vector n = initial_hit_object->getNormal(p);
+                p = p + n * 0.0001;
+                // std::srand(time(NULL));
+                Vector da_dir(
+                    n.x * std::rand(),
+                    n.y * std::rand(),
+                    n.z * std::rand()
+                );
+
+                da_dir = Vector::normalize(da_dir);
+
+                Ray da_ray(p, da_dir);
+
+                min_i = NULL;
+                min_t = std::numeric_limits<float>::max();
+                for(std::vector<Intersectable *>::iterator it = intersectables.begin(); it != intersectables.end(); ++it){
+                    float t = (*it)->intersect(da_ray);
+                    if (t < min_t){
+                        min_t = t;
+                        min_i = *it;
+                    }
+                }
+                if (min_i != NULL){
+                    color.r += min_i->color.r;
+                    color.g += min_i->color.g;
+                    color.b += min_i->color.b;
+                    ray_count++;
+                }
+
+            }
+        }
         if (isShadow) {
-            ray_count *= 5;
+            // ray_count *= 5;
         }
     }
 

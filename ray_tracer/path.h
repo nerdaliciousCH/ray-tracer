@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <vector>
+#include <limits>
 #include "../color/color.h"
 #include "../geometry/ray.h"
 #include "../geometry/intersectable.h"
