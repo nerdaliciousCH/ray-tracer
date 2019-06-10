@@ -19,7 +19,7 @@
 using namespace std::chrono;
 
 // Globals
-int pixel_factor = 20;
+int pixel_factor = 50;
 int WIDTH = 16*pixel_factor;
 int HEIGHT = 16*pixel_factor;
 float BOX_DIM = 2.5;
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 		Vector(0.0, 0.0, -1.0)
 	);
 
-	Sphere lightBulb(radius, Vector(5.0, 2.5, -20.0), Color(255, 255, 255));
+	Sphere *lightBulb = new Sphere(radius, Vector(0.0, -BOX_DIM - 0.25, -7.5), Color(255, 255, 255));
 
 	std::vector<Intersectable *> intersectables;
 
@@ -109,6 +109,7 @@ int main(int argc, char *argv[]) {
 			color_buffer[base + 2] = final_color.b;
 		}
 	}
+	std::cout << "Light at: " << &lightBulb << std::endl;
 
 	auto time_end = Clock::now();
 	auto time_spent = duration_cast<duration<double>>(time_end - time_start);

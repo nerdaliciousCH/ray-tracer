@@ -2,7 +2,7 @@
 
 #include <limits>
 
-Path::Path(Ray initial_ray, std::vector<Intersectable *> intersectables, Sphere light, int max_path_length) :
+Path::Path(Ray initial_ray, std::vector<Intersectable *> intersectables, Sphere *light, int max_path_length) :
     intersectables(intersectables),
     initial_ray(initial_ray),
     light(light),
@@ -21,12 +21,20 @@ void Path::trace() {
     Ray ray = initial_ray;
 
     for(int i = 0; i < max_path_length; i++) {
+        // Find intersections with regulra objects
         for(std::vector<Intersectable *>::iterator it = intersectables.begin(); it != intersectables.end(); ++it){
             float t = (*it)->intersect(ray);
             if (t < min_t){
                 min_t = t;
                 min_i = *it;
             }
+        }
+
+        // Find intersection with lightbulb
+        float t_light = light->intersect(ray);
+        if (t_light < min_t) {
+            min_t = t_light;
+            min_i = light;
         }
 
         if (min_i == NULL && path_length == 0){
