@@ -1,24 +1,8 @@
 if [[ -z $1 ]]; then
-	RADIUS=0.5
+	THREADS=16
 else
-	RADIUS=$1
+	THREADS=$1
 fi
 
-if [[ -z $2 ]]; then
-	DEPTH=1
-else
-	DEPTH=$2
-fi
-
-if [[ -z $3 ]]; then
-	SAMPLES=1
-else 
-	SAMPLES=$3
-fi
-
-echo "radius is $RADIUS"
-echo "depth is $DEPTH"
-echo "samples is $SAMPLES"
-
-./program $RADIUS $DEPTH $SAMPLES
+./program $THREADS
 xdg-open ray-trace.bmp
