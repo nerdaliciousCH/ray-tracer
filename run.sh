@@ -1,8 +1,8 @@
 if [[ -z $1 ]]; then
-	THREADS=16
+	SIZE_FACTOR=4
 else
-	THREADS=$1
+	SIZE_FACTOR=$1
 fi
-
-./program $THREADS
+make
+./program 16 $SIZE_FACTOR
 xdg-open ray-trace.bmp

@@ -14,6 +14,22 @@ Color::Color(int grayscale) :
 
 }
 
+Color Color::operator+(const Color& other){
+    Color new_color(
+        r + other.r,
+        g + other.g,
+        b + other.b
+    );
+    return new_color;
+}
+
+Color& Color::operator/=(const float factor){
+    this->r = (int)(this->r / factor);
+    this->g = (int)(this->g / factor);
+    this->b = (int)(this->b / factor);
+    return *this;
+}
+
 void Color::print() {
     std::cout << "red: " << r << "\tgreen: " << g << "\tblue: " << b << std::endl;
 }

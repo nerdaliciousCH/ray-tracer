@@ -24,6 +24,25 @@ void print_test_preamble(std::string name){
     std::cout << "Test " << name << ": ";
 }
 
+void test_color() {
+    print_test_preamble("Color");
+    Color red(255, 0, 0);
+    Color green(0, 255, 0);
+    Color blue(0, 0, 255);
+    Color magenta = red + blue;
+    assert(magenta.r == 255);
+    assert(magenta.g == 0);
+    assert(magenta.b == 255);
+    Color* address_before = &red;
+    red /= 2;
+    Color* address_after = &red;
+    assert(red.r == 127);
+    assert(red.g == 0);
+    assert(red.b == 0);
+    assert(address_before == address_after);
+    print_success();
+}
+
 void test_vector() {
     print_test_preamble("Vector");
     Vector a(1.0, 0.0, 0.0);
@@ -130,6 +149,7 @@ void test_sphere() {
 
 int main(int argc, char *argv[]){
     std::cout << "Running test ..." << std::endl;
+    test_color();
     test_vector();
     test_ray();
     test_plane();

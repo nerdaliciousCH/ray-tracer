@@ -19,9 +19,8 @@
 using namespace std::chrono;
 
 // Globals
-int pixel_factor = 4;
-int WIDTH = 256*pixel_factor;
-int HEIGHT = 256*pixel_factor;
+int WIDTH = 128;
+int HEIGHT = 128;
 float BOX_DIM = 2.5;
 
 void ray_trace_function(Camera *camera, std::vector<Intersectable *> *intersectables, Sphere* light, int *color_buffer, int width, int height, int start_index_row, int rows_per_thread, int depth){
@@ -34,7 +33,7 @@ void ray_trace_function(Camera *camera, std::vector<Intersectable *> *intersecta
 
 			Ray initial_ray(
 				camera->getPosition(),
-				Vector(y, x, -1.0) // TODO why do I have to flip this?
+				Vector(y, x, -0.9) // TODO why do I have to flip this?
 				// TODO adjust how Z-coord affects FOV
 			);
 
@@ -58,6 +57,9 @@ int main(int argc, char *argv[]) {
 
 	// Get input
 	int num_threads = std::stoi(argv[1]);
+	int pixel_factor = std::stoi(argv[2]);
+	WIDTH *= pixel_factor;
+	HEIGHT *= pixel_factor;
 	int depth = 4;
 	float radius = 0.5;
 
@@ -71,7 +73,7 @@ int main(int argc, char *argv[]) {
 		Vector(0.0, 0.0, -1.0)
 	);
 
-	Sphere *light = new Sphere(radius, Vector(0.0, -BOX_DIM + 0.45, 1.5), Color(255, 255, 255), true, false);
+	Sphere *light = new Sphere(radius, Vector(-1.0, -BOX_DIM, -4.5), Color(255, 255, 255), true, false);
 
 	std::vector<Intersectable *> *intersectables = new std::vector<Intersectable *>();
 
@@ -104,11 +106,11 @@ int main(int argc, char *argv[]) {
 	);
 	// Red sphere
 	intersectables->push_back(
-		new Sphere(radius, Vector(0.0, 1.0, -5.0), Color(255, 0, 0), false, false)
+		new Sphere(radius, Vector(-0.5, 1.5, -6.0), Color(255, 0, 0), false, false)
 	);
 	// Green sphere
 	intersectables->push_back(
-		new Sphere(radius, Vector(0.75, 1.0, -3.4), Color(0, 255, 0), false, true)
+		new Sphere(radius, Vector(0.75, 1.5, -5.5), Color(0, 255, 0), false, true)
 	);
 
 	srand(time(NULL)); // For the rand() function used in stochastic global illumination
@@ -138,8 +140,8 @@ int main(int argc, char *argv[]) {
 			current_thread_idx++;
 		}
 
-		for(int k = 0; k < num_threads; k++){
-			worker_threads[k].join();
+		for(int i = 0; i < num_threads; i++){
+			worker_threads[i].join();
 		}
 
 	} else {

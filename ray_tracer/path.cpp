@@ -2,7 +2,7 @@
 
 #include <time.h>
 
-float EPSILON = 1.0e-4;
+float EPSILON = 1.0e-4; // TODO make this a global
 
 Path::Path(Ray initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length) :
     intersectables(intersectables),
@@ -33,9 +33,7 @@ void Path::trace() {
     } else {
         // We hit something
         // Get hit object's color
-        color.r = min_i->color.r;
-        color.g = min_i->color.g;
-        color.b = min_i->color.b;
+        color = min_i->color;
     }
     ray_count++;
 
@@ -85,43 +83,41 @@ void Path::trace() {
                     min_i = *it;
                 }
             }
-            color.r = min_i->color.r;
-            color.g = min_i->color.g;
-            color.b = min_i->color.b;
+            color = min_i->color;
         } else {
-            // Stochastic light
-            for (int i = 0; i < 2; i++){
-                Vector p = init_origin + init_direction * init_min_t;
-                Vector n = initial_hit_object->getNormal(p);
-                p = p + n * 0.0001;
-                // std::srand(time(NULL));
-                Vector da_dir(
-                    n.x * std::rand(),
-                    n.y * std::rand(),
-                    n.z * std::rand()
-                );
-
-                da_dir = Vector::normalize(da_dir);
-
-                Ray da_ray(p, da_dir);
-
-                min_i = NULL;
-                min_t = std::numeric_limits<float>::max();
-                for(std::vector<Intersectable *>::iterator it = intersectables->begin(); it != intersectables->end(); ++it){
-                    float t = (*it)->intersect(da_ray);
-                    if (t < min_t){
-                        min_t = t;
-                        min_i = *it;
-                    }
-                }
-                if (min_i != NULL){
-                    color.r += min_i->color.r;
-                    color.g += min_i->color.g;
-                    color.b += min_i->color.b;
-                    ray_count++;
-                }
-
-            }
+            // // Stochastic light
+            // for (int i = 0; i < 1; i++){
+            //     Vector p = init_origin + init_direction * init_min_t;
+            //     Vector n = initial_hit_object->getNormal(p);
+            //     p = p + n * 0.0001;
+            //     // std::srand(time(NULL));
+            //     Vector da_dir(
+            //         n.x * std::rand(),
+            //         n.y * std::rand(),
+            //         n.z * std::rand()
+            //     );
+            //
+            //     da_dir = Vector::normalize(da_dir);
+            //
+            //     Ray da_ray(p, da_dir);
+            //
+            //     min_i = NULL;
+            //     min_t = std::numeric_limits<float>::max();
+            //     for(std::vector<Intersectable *>::iterator it = intersectables->begin(); it != intersectables->end(); ++it){
+            //         float t = (*it)->intersect(da_ray);
+            //         if (t < min_t){
+            //             min_t = t;
+            //             min_i = *it;
+            //         }
+            //     }
+            //     if (min_i != NULL){
+            //         color.r = min_i->color.r;
+            //         color.g = min_i->color.g;
+            //         color.b = min_i->color.b;
+            //         ray_count++;
+            //     }
+            //
+            // }
         }
         if (isShadow) {
             ray_count *= 5;
@@ -129,6 +125,7 @@ void Path::trace() {
     }
 
     // Normalize color
+    // color /= ray_count;
     color.r = (int) ((float)color.r / ray_count);
     color.g = (int) ((float)color.g / ray_count);
     color.b = (int) ((float)color.b / ray_count);
