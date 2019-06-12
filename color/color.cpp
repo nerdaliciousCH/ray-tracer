@@ -23,6 +23,15 @@ Color Color::operator+(const Color& other){
     return new_color;
 }
 
+Color Color::operator/(const float factor){
+    Color new_color(
+        (int)(r/factor),
+        (int)(g/factor),
+        (int)(b/factor)
+    );
+    return new_color;
+}
+
 Color& Color::operator/=(const float factor){
     this->r = (int)(this->r / factor);
     this->g = (int)(this->g / factor);

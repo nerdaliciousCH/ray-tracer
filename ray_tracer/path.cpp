@@ -111,9 +111,7 @@ void Path::trace() {
             //         }
             //     }
             //     if (min_i != NULL){
-            //         color.r = min_i->color.r;
-            //         color.g = min_i->color.g;
-            //         color.b = min_i->color.b;
+            //         color = color + min_i->color;
             //         ray_count++;
             //     }
             //

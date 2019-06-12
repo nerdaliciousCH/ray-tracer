@@ -1,4 +1,5 @@
 core
+program
 Makefile
 test/Makefile
 test/test
