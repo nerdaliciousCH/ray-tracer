@@ -33,6 +33,8 @@ void test_color() {
     assert(magenta.r == 255);
     assert(magenta.g == 0);
     assert(magenta.b == 255);
+    Color dark_blue = blue / 2;
+    assert(dark_blue.b == 127);
     Color* address_before = &red;
     red /= 2;
     Color* address_after = &red;
