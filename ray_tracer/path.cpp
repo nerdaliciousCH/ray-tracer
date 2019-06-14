@@ -4,7 +4,7 @@
 
 float EPSILON = 1.0e-4; // TODO make this a global
 
-Path::Path(Ray initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length) :
+Path::Path(Ray *initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length) :
     intersectables(intersectables),
     initial_ray(initial_ray),
     max_path_length(max_path_length),
@@ -27,7 +27,7 @@ void Path::trace() {
     // Primary ray
     float min_t = std::numeric_limits<float>::max();
     Intersectable *min_i = NULL;
-    Ray ray = initial_ray;
+    Ray* ray = initial_ray;
 
     int ray_count = 0;
 
@@ -51,17 +51,17 @@ void Path::trace() {
     // Shadow ray and reflection
     if(!(min_i->type == TraceType::light)){
         // Save old hit information
-        Vector init_origin = ray.origin;
-        Vector init_direction = ray.direction;
+        Vector init_origin = ray->origin;
+        Vector init_direction = ray->direction;
         float init_min_t = min_t;
         Intersectable *initial_hit_object = min_i;
 
         // Get hit position and set ray for Shadow ray
-        Vector hit_point = ray.origin + ray.direction * min_t;
-        ray.origin = hit_point;
-        ray.direction = Vector::normalize(light->center - hit_point);
-        Vector new_origin_epsilon = ray.origin + ray.direction * 0.0001;
-        ray.origin = new_origin_epsilon;
+        Vector hit_point = ray->origin + ray->direction * min_t;
+        ray->origin = hit_point;
+        ray->direction = Vector::normalize(light->center - hit_point);
+        Vector new_origin_epsilon = ray->origin + ray->direction * 0.0001;
+        ray->origin = new_origin_epsilon;
 
         // Reset hit info
         min_i = NULL;
@@ -79,10 +79,10 @@ void Path::trace() {
         if(initial_hit_object->type == TraceType::reflective){
             ray_count++;
             Ray old_ray(init_origin, init_direction);
-            Vector reflection = initial_hit_object->getReflectionsDirection(old_ray, init_min_t);
-            ray.origin = init_origin + init_direction * init_min_t;
-            ray.direction = Vector::normalize(reflection);
-            ray.origin = ray.origin + ray.direction * 0.0001;
+            Vector reflection = initial_hit_object->getReflectionsDirection(&old_ray, init_min_t);
+            ray->origin = init_origin + init_direction * init_min_t;
+            ray->direction = Vector::normalize(reflection);
+            ray->origin = ray->origin + ray->direction * 0.0001;
 
             // Hit another object as perfect reflection.
             min_i = NULL;

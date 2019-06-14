@@ -13,9 +13,9 @@ public:
     float radius;
     Vector center;
     Sphere(float radius, Vector center, Color color, TraceType type);
-    float intersect(Ray ray);
+    float intersect(Ray *ray);
+    Vector getReflectionsDirection(Ray *ray, float t);
     Vector getNormal(Vector surface_point);
-    Vector getReflectionsDirection(Ray ray, float t);
     void print();
 };
 

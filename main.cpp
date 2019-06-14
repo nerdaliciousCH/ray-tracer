@@ -38,7 +38,7 @@ void ray_trace_function(Camera *camera, std::vector<Intersectable *> *intersecta
 			);
 
 			Path path(
-				initial_ray,
+				&initial_ray,
 				intersectables,
 				light,
 				depth

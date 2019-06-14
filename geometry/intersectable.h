@@ -20,8 +20,8 @@ public:
         {};
   TraceType type;
   Color color;
-  virtual float intersect(Ray ray) = 0;
-  virtual Vector getReflectionsDirection(Ray ray, float t) = 0;
+  virtual float intersect(Ray *ray) = 0;
+  virtual Vector getReflectionsDirection(Ray *ray, float t) = 0;
   virtual Vector getNormal(Vector surface_point) = 0;
 };
 

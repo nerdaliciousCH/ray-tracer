@@ -5,17 +5,17 @@ Sphere::Sphere(float radius, Vector center, Color color, TraceType type) :
     radius(radius),
     center(center){}
 
-float Sphere::intersect(Ray ray) {
+float Sphere::intersect(Ray *ray) {
     // t^2 * (dir dot dir) +
     // 2 * t * (dir dot (origin - center)) +
     // ((origin - center) dot (origin - center) - r^2) = 0
     // Is of form a*t^2 + b*t + c = 0
-    float ray_direction_squared = Vector::dot(ray.direction, ray.direction); // dir dot dir
-    Vector diff_ray_origin_center = ray.origin - center; // (origin - center)
+    float ray_direction_squared = Vector::dot(ray->direction, ray->direction); // dir dot dir
+    Vector diff_ray_origin_center = ray->origin - center; // (origin - center)
     float radius_squared = radius * radius; // r^2
 
     float a = ray_direction_squared;
-    float b = 2 * Vector::dot(ray.direction, diff_ray_origin_center);
+    float b = 2 * Vector::dot(ray->direction, diff_ray_origin_center);
     float c = Vector::dot(diff_ray_origin_center, diff_ray_origin_center) - radius_squared;
 
     float discriminant = b*b-4*a*c;
@@ -51,10 +51,10 @@ Vector Sphere::getNormal(Vector surface_point){
     return Vector::normalize(surface_point - center);
 }
 
-Vector Sphere::getReflectionsDirection(Ray ray, float t) {
-    Vector point = ray.origin + ray.direction * t;
+Vector Sphere::getReflectionsDirection(Ray *ray, float t) {
+    Vector point = ray->origin + ray->direction * t;
     Vector normal = Vector::normalize(point - center);
-    return ray.direction - normal * 2 * Vector::dot(ray.direction, normal);
+    return ray->direction - normal * 2 * Vector::dot(ray->direction, normal);
 }
 
 void Sphere::print(){

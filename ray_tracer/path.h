@@ -12,14 +12,14 @@
 
 class Path {
 private:
-  Ray initial_ray;
+  Ray *initial_ray;
   int max_path_length;
   int path_length;
   Color color;
   Sphere *light;
   std::vector<Intersectable *> *intersectables;
 public:
-  Path(Ray initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length);
+  Path(Ray *initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length);
   void trace();
   Hit* trace_ray(Ray* ray);
   Ray* get_shadow_ray(Ray *ray, Hit* hit);
