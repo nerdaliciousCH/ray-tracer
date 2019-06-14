@@ -1,7 +1,7 @@
 #include "sphere.h"
 
-Sphere::Sphere(float radius, Vector center, Color color, bool isLight, bool isReflective) :
-    Intersectable(color, isLight, isReflective),
+Sphere::Sphere(float radius, Vector center, Color color, TraceType type) :
+    Intersectable(color, type),
     radius(radius),
     center(center){}
 

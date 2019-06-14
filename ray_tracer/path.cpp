@@ -11,6 +11,17 @@ Path::Path(Ray initial_ray, std::vector<Intersectable *> *intersectables, Sphere
     light(light),
     color(Color(0, 0, 0)) {
 }
+Ray* Path::get_shadow_ray(Ray *ray, Hit* hit){
+    return NULL;
+}
+
+Ray* Path::get_reflection_ray(Ray *ray, Hit* hit) {
+    return NULL;
+}
+
+Hit* Path::trace_ray(Ray *ray){
+    return NULL;
+}
 
 void Path::trace() {
     // Primary ray
@@ -38,7 +49,7 @@ void Path::trace() {
     ray_count++;
 
     // Shadow ray and reflection
-    if(!(min_i->isLightSource)){
+    if(!(min_i->type == TraceType::light)){
         // Save old hit information
         Vector init_origin = ray.origin;
         Vector init_direction = ray.direction;
@@ -62,10 +73,10 @@ void Path::trace() {
                 min_i = *it;
             }
         }
-        bool isShadow = !min_i->isLightSource;
+        bool isShadow = min_i->type != TraceType::light;
 
         // Reflection
-        if(initial_hit_object->isReflective){
+        if(initial_hit_object->type == TraceType::reflective){
             ray_count++;
             Ray old_ray(init_origin, init_direction);
             Vector reflection = initial_hit_object->getReflectionsDirection(old_ray, init_min_t);

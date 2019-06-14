@@ -5,15 +5,20 @@
 #include "../color/color.h"
 #include "ray.h"
 
+enum class TraceType {
+    normal,
+    light,
+    reflective,
+    refractive
+};
+
 class Intersectable {
 public:
-    Intersectable(Color color, bool isLightSource, bool isReflective):
+    Intersectable(Color color, TraceType type):
         color(color),
-        isLightSource(isLightSource),
-        isReflective(isReflective)
+        type(type)
         {};
-  bool isReflective;
-  bool isLightSource;
+  TraceType type;
   Color color;
   virtual float intersect(Ray ray) = 0;
   virtual Vector getReflectionsDirection(Ray ray, float t) = 0;

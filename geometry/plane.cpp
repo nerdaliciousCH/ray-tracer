@@ -1,7 +1,7 @@
 #include "plane.h"
 
-Plane::Plane(Vector point, Vector normal, Color color, bool isLight, bool isReflective) :
-    Intersectable(color, isLight, isReflective),
+Plane::Plane(Vector point, Vector normal, Color color, TraceType type) :
+    Intersectable(color, type),
     point(point),
     normal(normal){
     }

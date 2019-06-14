@@ -8,6 +8,7 @@
 #include "../geometry/ray.h"
 #include "../geometry/intersectable.h"
 #include "../geometry/sphere.h"
+#include "hit.h"
 
 class Path {
 private:
@@ -20,6 +21,9 @@ private:
 public:
   Path(Ray initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length);
   void trace();
+  Hit* trace_ray(Ray* ray);
+  Ray* get_shadow_ray(Ray *ray, Hit* hit);
+  Ray* get_reflection_ray(Ray *ray, Hit* hit);
   void setColor(Color color);
   Color getColor();
 };

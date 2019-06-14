@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 		Vector(0.0, 0.0, -1.0)
 	);
 
-	Sphere *light = new Sphere(radius, Vector(-1.0, -BOX_DIM, -4.5), Color(255, 255, 255), true, false);
+	Sphere *light = new Sphere(radius, Vector(-1.0, -BOX_DIM, -4.5), Color(255, 255, 255), TraceType::light);
 
 	std::vector<Intersectable *> *intersectables = new std::vector<Intersectable *>();
 
@@ -82,35 +82,35 @@ int main(int argc, char *argv[]) {
 	);
 	// Wall left
 	intersectables->push_back(
-		new Plane(Vector(-BOX_DIM, 0.0, 0.0), Vector(1.0, 0.0, 0.0), Color(0, 0, 255), false, false)
+		new Plane(Vector(-BOX_DIM, 0.0, 0.0), Vector(1.0, 0.0, 0.0), Color(0, 0, 255), TraceType::normal)
 	);
 	// Wall right
 	intersectables->push_back(
-		new Plane(Vector(BOX_DIM, 0.0, 0.0), Vector(-1.0, 0.0, 0.0), Color(255, 0, 0), false, false)
+		new Plane(Vector(BOX_DIM, 0.0, 0.0), Vector(-1.0, 0.0, 0.0), Color(255, 0, 0), TraceType::normal)
 	);
 	// Wall front
 	intersectables->push_back(
-		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(255, 255, 255), false, true)
+		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(255, 255, 255), TraceType::reflective)
 	);
 	// Wall back
 	intersectables->push_back(
-		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(150, 150, 150), false, false)
+		new Plane(Vector(0.0, 0.0, BOX_DIM), Vector(0.0, 0.0, -1.0), Color(150, 150, 150), TraceType::normal)
 	);
 	// Wall top
 	intersectables->push_back(
-		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(150, 150, 150), false, false)
+		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(150, 150, 150), TraceType::normal)
 	);
 	// Wall bottom
 	intersectables->push_back(
-		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(150, 150, 150), false, false)
+		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(150, 150, 150), TraceType::normal)
 	);
 	// Red sphere
 	intersectables->push_back(
-		new Sphere(radius, Vector(-0.5, 1.5, -6.0), Color(255, 0, 0), false, false)
+		new Sphere(radius, Vector(-0.5, 1.5, -6.0), Color(255, 0, 0), TraceType::normal)
 	);
 	// Green sphere
 	intersectables->push_back(
-		new Sphere(radius, Vector(0.75, 1.5, -5.5), Color(0, 255, 0), false, true)
+		new Sphere(radius, Vector(0.75, 1.5, -5.5), Color(0, 255, 0), TraceType::reflective)
 	);
 
 	srand(time(NULL)); // For the rand() function used in stochastic global illumination
