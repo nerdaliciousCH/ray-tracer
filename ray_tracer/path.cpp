@@ -11,12 +11,20 @@ Path::Path(Ray *initial_ray, std::vector<Intersectable *> *intersectables, Spher
     light(light),
     color(Color(0, 0, 0)) {
 }
-Ray* Path::get_shadow_ray(Ray *ray, Hit* hit){
-    return NULL;
+void Path::get_shadow_ray(Ray *ray, Hit* hit, Ray *out){
+    // Get hit position and set ray for Shadow ray
+    Vector hit_point = ray->origin + ray->direction * hit->t;
+    out->origin = hit_point;
+    out->direction = Vector::normalize(light->center - hit_point);
+    Vector new_origin_epsilon = out->origin + out->direction * EPSILON;
+    out->origin = new_origin_epsilon;
 }
 
-Ray* Path::get_reflection_ray(Ray *ray, Hit* hit) {
-    return NULL;
+void Path::get_reflection_ray(Ray *ray, Hit* hit, Ray *out) {
+    Vector reflection = hit->object->getReflectionsDirection(ray, hit->t);
+    out->origin = ray->origin + ray->direction * hit->t;
+    out->direction = Vector::normalize(reflection);
+    out->origin = out->origin + out->direction * EPSILON;
 }
 
 void Path::trace_ray(Ray *ray, Hit *hit){
@@ -36,6 +44,7 @@ void Path::trace() {
     float min_t = std::numeric_limits<float>::max();
     Intersectable *min_i = NULL;
     Ray* ray = initial_ray;
+    Ray out_ray; // TODO not so nice.
 
     int ray_count = 0;
     Hit hit;
@@ -55,34 +64,18 @@ void Path::trace() {
 
     // Shadow ray and reflection
     if(!(primary_hit.object->type == TraceType::light)){
-        // Save old hit information
-        Vector init_origin = initial_ray->origin;
-        Vector init_direction = initial_ray->direction;
-        float init_min_t = primary_hit.t;
-        Intersectable *initial_hit_object = primary_hit.object;
-
-        // Get hit position and set ray for Shadow ray
-        Vector hit_point = ray->origin + ray->direction * primary_hit.t;
-        ray->origin = hit_point;
-        ray->direction = Vector::normalize(light->center - hit_point);
-        Vector new_origin_epsilon = ray->origin + ray->direction * EPSILON;
-        ray->origin = new_origin_epsilon;
 
         // Reset hit info
-        trace_ray(ray, &hit);
+        get_shadow_ray(initial_ray, &primary_hit, &out_ray);
+        trace_ray(&out_ray, &hit);
         bool isShadow = hit.object->type != TraceType::light;
 
         // Reflection
-        if(initial_hit_object->type == TraceType::reflective){
+        if(primary_hit.object->type == TraceType::reflective){
             ray_count++;
-            Ray old_ray(init_origin, init_direction);
-            Vector reflection = initial_hit_object->getReflectionsDirection(&old_ray, init_min_t);
-            ray->origin = init_origin + init_direction * init_min_t;
-            ray->direction = Vector::normalize(reflection);
-            ray->origin = ray->origin + ray->direction * EPSILON;
-
             // Hit another object as perfect reflection.
-            trace_ray(ray, &hit);
+            get_reflection_ray(initial_ray, &primary_hit, &out_ray);
+            trace_ray(&out_ray, &hit);
             color = hit.object->color;
         } else {
             // // Stochastic light

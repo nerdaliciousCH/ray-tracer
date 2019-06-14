@@ -3,7 +3,6 @@ if [[ -z $1 ]]; then
 else
 	SIZE_FACTOR=$1
 fi
-rm program
 rm ray-trace.bmp
 make
 ./program 16 $SIZE_FACTOR

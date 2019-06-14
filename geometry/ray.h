@@ -9,6 +9,7 @@ class Ray {
 public:
   Vector origin;
   Vector direction;
+  Ray();
   Ray(Vector origin, Vector direction);
   void print();
 };

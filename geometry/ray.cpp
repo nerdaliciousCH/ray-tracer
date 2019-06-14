@@ -1,5 +1,7 @@
 #include "ray.h"
 
+Ray::Ray() : origin(Vector(0)), direction(Vector(0, 0, -1)){}
+
 Ray::Ray(Vector origin, Vector direction) :
 origin(origin),
 direction(direction){
