@@ -24,6 +24,7 @@ public:
   void trace_ray(Ray* ray, Hit* hit);
   void get_shadow_ray(Ray *ray, Hit* hit, Ray* out);
   void get_reflection_ray(Ray *ray, Hit* hit, Ray* out);
+  void get_stochastic_hemisphere_ray(Ray *ray, Hit* hit, Ray *out);
   void setColor(Color color);
   Color getColor();
 };

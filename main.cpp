@@ -118,6 +118,10 @@ int main(int argc, char *argv[]) {
 	int *color_buffer = (int *)malloc(HEIGHT*WIDTH*3*sizeof(int));
 
 	if (num_threads > 1) {
+		if (num_threads > HEIGHT){
+			num_threads = HEIGHT;
+			std::cout << "Too many threads!" << std::endl;
+		}
 		std::cout << "Running with " << num_threads << " worker threads" << std::endl;
 
 		std::thread worker_threads[num_threads];

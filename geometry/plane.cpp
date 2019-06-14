@@ -4,6 +4,7 @@ Plane::Plane(Vector point, Vector normal, Color color, TraceType type) :
     Intersectable(color, type),
     point(point),
     normal(normal){
+      normal = Vector::normalize(normal);
     }
 
 float Plane::intersect(Ray *ray) {
@@ -22,7 +23,7 @@ Vector Plane::getNormal(Vector a){
 }
 
 Vector Plane::getReflectionsDirection(Ray *ray, float t) {
-    return ray->direction - normal * 2 * Vector::dot(ray->direction, normal);
+    return Vector::normalize(ray->direction - normal * 2 * Vector::dot(ray->direction, normal));
 }
 
 void Plane::print(){

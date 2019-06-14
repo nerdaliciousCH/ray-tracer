@@ -54,7 +54,7 @@ Vector Sphere::getNormal(Vector surface_point){
 Vector Sphere::getReflectionsDirection(Ray *ray, float t) {
     Vector point = ray->origin + ray->direction * t;
     Vector normal = Vector::normalize(point - center);
-    return ray->direction - normal * 2 * Vector::dot(ray->direction, normal);
+    return Vector::normalize(ray->direction - normal * 2 * Vector::dot(ray->direction, normal));
 }
 
 void Sphere::print(){
