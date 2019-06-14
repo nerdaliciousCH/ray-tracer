@@ -1,7 +1,5 @@
 core
 program
-Makefile
-test/Makefile
 test/test
 *.o
 *.s
