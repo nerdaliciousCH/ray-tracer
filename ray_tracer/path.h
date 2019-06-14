@@ -21,7 +21,7 @@ private:
 public:
   Path(Ray *initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length);
   void trace();
-  Hit* trace_ray(Ray* ray);
+  void trace_ray(Ray* ray, Hit* hit);
   Ray* get_shadow_ray(Ray *ray, Hit* hit);
   Ray* get_reflection_ray(Ray *ray, Hit* hit);
   void setColor(Color color);
