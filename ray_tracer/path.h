@@ -8,6 +8,7 @@
 #include "../geometry/ray.h"
 #include "../geometry/intersectable.h"
 #include "../geometry/sphere.h"
+#include "../lighting/phong.h"
 #include "hit.h"
 
 class Path {

@@ -1,5 +1,5 @@
-program: main.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o path.o
-	g++ -pthread -g main.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o path.o -o program
+program: main.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o path.o phong.o
+	g++ -pthread -g main.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o path.o phong.o -o program
 	
 main.o: main.cpp
 	g++ -g -c main.cpp
@@ -30,3 +30,6 @@ ray.o: geometry/ray.cpp geometry/ray.h
 
 path.o: ray_tracer/path.cpp ray_tracer/path.h
 	g++ -g -c ray_tracer/path.cpp
+
+phong.o: lighting/phong.cpp lighting/phong.h
+	g++ -g -c lighting/phong.cpp

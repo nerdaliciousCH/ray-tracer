@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 		Vector(0.0, 0.0, -1.0)
 	);
 
-	Sphere *light = new Sphere(radius, Vector(-1.0, -BOX_DIM, -4.5), Color(255, 255, 255), TraceType::light);
+	Sphere *light = new Sphere(radius, Vector(-1.0, -BOX_DIM+0.45, -4.5), Color(255, 255, 255), TraceType::light);
 
 	std::vector<Intersectable *> *intersectables = new std::vector<Intersectable *>();
 
@@ -98,11 +98,11 @@ int main(int argc, char *argv[]) {
 	);
 	// Wall top
 	intersectables->push_back(
-		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(150, 150, 150), TraceType::normal)
+		new Plane(Vector(0.0, -BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(255, 150, 255), TraceType::normal)
 	);
 	// Wall bottom
 	intersectables->push_back(
-		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, 1.0, 0.0), Color(150, 150, 150), TraceType::normal)
+		new Plane(Vector(0.0, BOX_DIM, 0.0), Vector(0.0, -1.0, 0.0), Color(255, 150, 255), TraceType::normal)
 	);
 	// Red sphere
 	intersectables->push_back(

@@ -86,21 +86,20 @@ void test_plane() {
         Vector(0.0, 0.0, -10.0),
         Vector(0.0, 0.0, 1.0),
         Color(0),
-        false,
-        false
+        TraceType::normal
     );
     Ray ray_straight(
         Vector(0.0),
         Vector(0.0, 0.0, -1.0)
     );
-    float t_straight = plane.intersect(ray_straight);
-    Vector dir_straight_reflection = plane.getReflectionsDirection(ray_straight, t_straight);
+    float t_straight = plane.intersect(&ray_straight);
+    Vector dir_straight_reflection = plane.getReflectionsDirection(&ray_straight, t_straight);
     Ray ray_non_straight(
         Vector(0.0),
         Vector(-1.0, 0.0, -1.0)
     );
-    float t_non_straight = plane.intersect(ray_non_straight);
-    Vector dir_non_straight_reflection = plane.getReflectionsDirection(ray_non_straight, t_non_straight);
+    float t_non_straight = plane.intersect(&ray_non_straight);
+    Vector dir_non_straight_reflection = plane.getReflectionsDirection(&ray_non_straight, t_non_straight);
 
     // Test intersection points
     assert((ray_straight.origin + ray_straight.direction * t_straight) == plane.point);
@@ -119,8 +118,7 @@ void test_sphere() {
         5.0,
         Vector(0.0, 0.0, -20.0),
         Color(0),
-        false,
-        false
+        TraceType::normal
     );
     Ray ray_straight(
         Vector(0.0),
@@ -135,11 +133,11 @@ void test_sphere() {
         Vector(0.0, 0.0, -1.0)
     );
 
-    float t_straight = sphere.intersect(ray_straight);
-    Vector dir_straight_reflection = sphere.getReflectionsDirection(ray_straight, t_straight);
+    float t_straight = sphere.intersect(&ray_straight);
+    Vector dir_straight_reflection = sphere.getReflectionsDirection(&ray_straight, t_straight);
 
-    float t_non_straight = sphere.intersect(ray_non_straight);
-    Vector dir_non_straight_reflection = sphere.getReflectionsDirection(ray_non_straight, t_non_straight);
+    float t_non_straight = sphere.intersect(&ray_non_straight);
+    Vector dir_non_straight_reflection = sphere.getReflectionsDirection(&ray_non_straight, t_non_straight);
 
     assert((ray_straight.origin + ray_straight.direction * t_straight) == Vector(0.0, 0.0, sphere.center.z + sphere.radius));
     assert(dir_straight_reflection == Vector(0.0, 0.0, 1.0));

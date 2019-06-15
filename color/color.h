@@ -11,6 +11,7 @@ public:
   Color(int r, int g, int b);
   Color(int grayscale);
   Color operator+(const Color& other);
+  Color operator*(const float factor);
   Color operator/(const float factor);
   Color& operator/=(const float factor);
   void print();
