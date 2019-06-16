@@ -13,6 +13,7 @@ public:
     Vector(float xyz);
     Vector(float x, float y, float z);
     static float dot(Vector a, Vector b);
+    static Vector cross(Vector a, Vector b);
     static Vector normalize(Vector a);
     float length();
     Vector operator+(const Vector& other);

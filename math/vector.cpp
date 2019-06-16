@@ -13,13 +13,20 @@ Vector::Vector(float x, float y, float z):
     z(z){
 }
 
+float Vector::dot(Vector a, Vector b){
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+Vector Vector::cross(Vector a, Vector b) {
+    float cross_x = a.y*b.z - a.z*b.y;
+    float cross_y = a.z*b.x - a.x*b.z;
+    float cross_z = a.x*b.y - a.y*b.x;
+    return Vector(cross_x, cross_y, cross_z);
+}
+
 Vector Vector::normalize(Vector a) {
     float length = a.length();
     return Vector(a.x/length, a.y/length, a.z/length);
-}
-
-float Vector::dot(Vector a, Vector b){
-    return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 float Vector::length() {

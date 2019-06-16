@@ -1,5 +1,6 @@
 #include "phong.h"
 #include <iostream>
+
 Color PhongModel::calculate(Ray* camera_ray, Hit* hit, Vector* light_position, Color* light_color){
     Color phong_color(0);
     Vector hit_point = hit->ray->origin + hit->ray->direction * hit->t;
@@ -24,7 +25,7 @@ Color PhongModel::calculate(Ray* camera_ray, Hit* hit, Vector* light_position, C
     float specular_coefficient = specular_dot >= 0.0 ? std::pow(
         specular_dot,
         specular_exponent
-    ) : 0.0;
+    ) : 0.0; // TODO this can also be calculated as recursive ray color
 
     phong_color =  ambient + hit->object->color * (diffuse_coefficient + specular_coefficient);
 
