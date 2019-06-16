@@ -51,6 +51,10 @@ void test_vector() {
     Vector b(0.0, 1.0, 0.0);
     Vector c(1.0, 1.0, 0.0);
     Vector normalized = Vector::normalize(c);
+    Vector a_dot_b = Vector::dot(a, b);
+    Vector a_dot_a = Vector::dot(a, a);
+    Vector a_cross_b = Vector::cross(a, b);
+    Vector a_cross_a = Vector::cross(a, a);
 
     assert(Vector::dot(a, b) == 0.0);
     assert(Vector::dot(a, a) == 1.0);
@@ -62,6 +66,10 @@ void test_vector() {
     assert(a.length() == 1.0);
     assert((c.length() - 1.4142) < 1.0e-4);
     assert(normalized.length() - 1.0 < 1.0e-4);
+    assert(a_dot_a == 1.0);
+    assert(a_dot_b == 0.0);
+    assert(a_cross_b == Vector(0.0, 0.0, 1.0));
+    assert(a_cross_a == Vector(0));
     print_success();
 }
 
