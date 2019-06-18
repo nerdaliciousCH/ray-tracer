@@ -9,7 +9,13 @@ if [[ -z $2 ]]; then
 else
 	SIZE_FACTOR=$2
 fi
+
+if [[ -z $3 ]]; then
+	RANDOM_SAMPLES=10
+else
+	RANDOM_SAMPLES=$3
+fi
 rm ray-trace.bmp
 make
-./program $THREADS $SIZE_FACTOR
+./program $THREADS $SIZE_FACTOR $RANDOM_SAMPLES
 xdg-open ray-trace.bmp

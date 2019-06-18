@@ -23,7 +23,7 @@ int WIDTH = 128;
 int HEIGHT = 128;
 float BOX_DIM = 2.5;
 
-void ray_trace_function(Camera *camera, std::vector<Intersectable *> *intersectables, Sphere* light, int *color_buffer, int width, int height, int start_index_row, int rows_per_thread, int depth){
+void ray_trace_function(Camera *camera, std::vector<Intersectable *> *intersectables, Sphere* light, int *color_buffer, int width, int height, int start_index_row, int rows_per_thread, int depth, int random_samples){
 	for(int i = start_index_row; i < start_index_row+rows_per_thread; i++){
 		for(int j = 0; j < width; j++) {
 
@@ -41,7 +41,8 @@ void ray_trace_function(Camera *camera, std::vector<Intersectable *> *intersecta
 				&initial_ray,
 				intersectables,
 				light,
-				depth
+				depth,
+				random_samples
 			);
 			path.trace();
 
@@ -58,6 +59,7 @@ int main(int argc, char *argv[]) {
 	// Get input
 	int num_threads = std::stoi(argv[1]);
 	int pixel_factor = std::stoi(argv[2]);
+	int random_samples = std::stoi(argv[3]);
 	WIDTH *= pixel_factor;
 	HEIGHT *= pixel_factor;
 	int depth = 4;
@@ -90,7 +92,7 @@ int main(int argc, char *argv[]) {
 	);
 	// Wall front
 	intersectables->push_back(
-		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(255, 255, 255), TraceType::reflective)
+		new Plane(Vector(0.0, 0.0, -10), Vector(0.0, 0.0, 1.0), Color(255, 255, 255), TraceType::normal)
 	);
 	// Wall back
 	intersectables->push_back(
@@ -110,7 +112,7 @@ int main(int argc, char *argv[]) {
 	);
 	// Green sphere
 	intersectables->push_back(
-		new Sphere(radius, Vector(0.75, 1.5, -5.5), Color(0, 255, 0), TraceType::reflective)
+		new Sphere(radius, Vector(0.75, 1.5, -5.5), Color(0, 255, 0), TraceType::normal)
 	);
 
 	srand(time(NULL)); // For the rand() function used in stochastic global illumination
@@ -139,7 +141,8 @@ int main(int argc, char *argv[]) {
 				HEIGHT,
 				i*rows_per_thread,
 				rows_per_thread,
-				depth
+				depth,
+				random_samples
 			);
 			current_thread_idx++;
 		}
@@ -159,7 +162,8 @@ int main(int argc, char *argv[]) {
 			HEIGHT,
 			0,
 			HEIGHT,
-			depth
+			depth,
+			random_samples
 		);
 	}
 

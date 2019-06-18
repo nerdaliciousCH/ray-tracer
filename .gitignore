@@ -3,4 +3,5 @@ program
 test/test
 *.o
 *.s
-*.bmp
+ray-trace.bmp
+.vscode

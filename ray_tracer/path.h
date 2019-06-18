@@ -16,17 +16,17 @@ private:
   Ray *initial_ray;
   int max_path_length;
   int path_length;
+  int random_samples;
   Color color;
   Sphere *light;
   std::vector<Intersectable *> *intersectables;
 public:
-  Path(Ray *initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length);
+  Path(Ray *initial_ray, std::vector<Intersectable *> *intersectables, Sphere *light, int max_path_length, int random_samples);
   void trace();
-  void trace_ray(Ray* ray, Hit* hit);
-  void get_shadow_ray(Ray *ray, Hit* hit, Ray* out);
-  void get_reflection_ray(Ray *ray, Hit* hit, Ray* out);
-  void get_stochastic_hemisphere_ray(Ray *ray, Hit* hit, Ray *out);
-  void setColor(Color color);
+  void find_intersection(Ray* ray_in, Hit* hit);
+  static void get_shadow_ray(Ray *ray_in, Hit* hit_in, Sphere* light, Ray* ray_out);
+  static void get_reflection_ray(Ray *ray_in, Hit* hit_in, Ray* ray_out);
+  static void get_stochastic_hemisphere_ray(Ray *ray_in, Hit* hit_in, Ray *ray_out);
   Color getColor();
 };
 

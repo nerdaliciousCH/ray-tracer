@@ -1,5 +1,5 @@
-test: test.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o
-	g++ -g test.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o -o test
+test: test.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o phong.o path.o
+	g++ -g test.o draw_bmp.o utility_functions.o camera.o color.o vector.o plane.o sphere.o ray.o phong.o path.o -o test
 
 test.o: test.cpp
 	g++ -g -c test.cpp
@@ -27,3 +27,9 @@ sphere.o: ../geometry/sphere.cpp ../geometry/sphere.h
 
 ray.o: ../geometry/ray.cpp ../geometry/ray.h
 	g++ -g -c ../geometry/ray.cpp
+
+phong.o: ../lighting/phong.cpp ../lighting/phong.h
+	g++ -g -c ../lighting/phong.cpp
+
+path.o: ../ray_tracer/path.cpp ../ray_tracer/path.h
+	g++ -g -c ../ray_tracer/path.cpp
