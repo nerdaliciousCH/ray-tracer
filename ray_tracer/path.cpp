@@ -89,30 +89,38 @@ void Path::trace() {
             Color col(0);
             Ray new_ray;
             Hit new_hit;
+            // Basic shading
             Color primary_color = PhongModel::calculate(initial_ray, &primary_hit, &(light->center), &(light->color));
+            // Global indirect illumination via Monte Carlo hemisphere sampling
             for(int i = 0; i < random_samples; i++) {
                 Path::get_stochastic_hemisphere_ray(initial_ray, &primary_hit, &new_ray);
                 find_intersection(&new_ray, &new_hit);
-                float fac = 1.0/(1.0+new_hit.t);
+                float fac = 1.0/(1.0+new_hit.t); // TODO this attenuation function of the form 1/1+x is absolutely arbitrary. What is the physically correct one? logarithmic?
                 color = color + new_hit.object->color * fac;
             }
             color /= random_samples;
-            color = color / 2 + primary_color / 2;
+            color = color / 2 + primary_color / 2; // TODO this is absolutely arbitary
+            get_shadow_ray(initial_ray, &primary_hit, light, &out_ray);
+            find_intersection(&out_ray, &hit);
+            bool isShadow = hit.object->type != TraceType::light;
+            if (isShadow) {
+                color /= 2.5;
+            }
         }else{
             color = primary_hit.object->color;
         }
     }
 
-    // Shadow ray
-    if(primary_hit.object->type != TraceType::light){
-        // Reset hit info
-        get_shadow_ray(initial_ray, &primary_hit, light, &out_ray);
-        find_intersection(&out_ray, &hit);
-        bool isShadow = hit.object->type != TraceType::light;
-        if (isShadow) {
-            color /= 2.5;
-        }
-    }
+    // // Shadow ray
+    // if(primary_hit.object->type != TraceType::light){
+    //     // Reset hit info
+    //     get_shadow_ray(initial_ray, &primary_hit, light, &out_ray);
+    //     find_intersection(&out_ray, &hit);
+    //     bool isShadow = hit.object->type != TraceType::light;
+    //     if (isShadow) {
+    //         color /= 2.5;
+    //     }
+    // }
 }
 
 Color Path::getColor() {
