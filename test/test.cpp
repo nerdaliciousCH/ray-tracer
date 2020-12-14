@@ -109,6 +109,7 @@ void test_plane() {
     float t_non_straight = plane.intersect(&ray_non_straight);
     Vector dir_non_straight_reflection = plane.getReflectionsDirection(&ray_non_straight, t_non_straight);
 
+    Vector vec1 = ray_straight.origin + ray_straight.direction * t_straight;
     // Test intersection points
     assert((ray_straight.origin + ray_straight.direction * t_straight) == plane.point);
     assert((ray_non_straight.origin + ray_non_straight.direction * t_non_straight) == Vector(-10.0, 0.0, -10.0));
@@ -146,7 +147,15 @@ void test_sphere() {
 
     float t_non_straight = sphere.intersect(&ray_non_straight);
     Vector dir_non_straight_reflection = sphere.getReflectionsDirection(&ray_non_straight, t_non_straight);
+    
+    // TODO wtf is happening here
+    Vector vec1  = ray_straight.origin + ray_straight.direction * t_straight;
+    vec1.print();
+    Vector vec2(0.0, 0.0, sphere.center.z + sphere.radius);
+    vec2.print();
+    float wtf = sphere.center.z + sphere.radius;
 
+    std::cout << sphere.radius << std::endl;
     assert((ray_straight.origin + ray_straight.direction * t_straight) == Vector(0.0, 0.0, sphere.center.z + sphere.radius));
     assert(dir_straight_reflection == Vector(0.0, 0.0, 1.0));
     assert((ray_non_straight.origin + ray_non_straight.direction * t_non_straight) == hit_askew_target_position);
